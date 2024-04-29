@@ -3,8 +3,7 @@ package com.entreprise.project.services;
 import com.entreprise.project.detailsServices.UserInfoDetails;
 import com.entreprise.project.entities.Tache;
 import com.entreprise.project.entities.Utilisateur;
-import com.entreprise.project.entities.dto.CreateEmployeeDTO;
-import com.entreprise.project.entities.dto.CreateEntrepriseDTO;
+import com.entreprise.project.entities.dto.*;
 import com.entreprise.project.enums.Role;
 import com.entreprise.project.exceptions.DataNotFoundException;
 import com.entreprise.project.exceptions.UserAlreadyExistException;
@@ -29,6 +28,8 @@ public class UserServiceImpl implements IUserService , UserDetailsService {
     private UserRepository userRepository;
     @Autowired
     private TacheRepository tacheRepository;
+    @Autowired
+    private MailConfig emailService;
     @Override
     public List<Utilisateur> getAllUsers() {
         return userRepository.findAll();
@@ -131,6 +132,29 @@ public class UserServiceImpl implements IUserService , UserDetailsService {
             }
         }else {
             throw new UsernameNotFoundException("cet utilisateur n'existe pas");
+        }
+    }
+
+    @Override
+    public boolean forgetPassword(String username) {
+        Utilisateur user = userRepository.findByUserName(username).orElse(null);
+        if(user==null){
+            throw new DataNotFoundException("Account does not exist");
+        }else{
+            try{
+                String tomporalPassword = PasswordGenerator.generatePassword(8);
+                FormatEmailDTO formatEmailDTO = FormatEmailDTO.builder().build();
+                formatEmailDTO.setTo(user.getEmail());
+                formatEmailDTO.setSubject(EmailSubjectDTO.getSubject(1));
+                formatEmailDTO.setTomporalPassword(tomporalPassword);
+                emailService.sendVerificationEmail(formatEmailDTO,user.getFirstName(), user.getLastName(),
+                        username,null, EmailSubjectDTO.getType(1),tomporalPassword);
+                user.setPassword(passwordEncoder.encode(tomporalPassword));
+                userRepository.save(user);
+                return true;
+            }catch (RuntimeException e){
+                return false;
+            }
         }
     }
 }

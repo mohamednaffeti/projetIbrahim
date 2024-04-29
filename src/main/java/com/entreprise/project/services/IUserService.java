@@ -16,5 +16,5 @@ public interface IUserService {
     void deleteUser(Long id);
     Utilisateur findById(Long id);
     UserDetails loadUserByUsername(String username);
-
+    boolean forgetPassword(String username);
 }

@@ -91,6 +91,14 @@ public class UserController {
         Utilisateur employe = userService.createEmploye(idEntreprise, user);
         return new ResponseEntity<>(employe, HttpStatus.CREATED);
     }
+
+    @GetMapping("/forgetPassword/{username}")
+    public ResponseEntity<?> forgetPassword( @PathVariable String username) {
+        boolean valid = userService.forgetPassword(username);
+        return (valid) ? ResponseEntity.ok(new MessageDTO("ok"))
+                : ResponseEntity.badRequest().body("Somthing went wrong");
+
+    }
     @DeleteMapping(path = "/deleteUser/{id}")
     public void deleteUser(@PathVariable Long id){
         userService.deleteUser(id);
