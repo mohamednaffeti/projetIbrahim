@@ -99,6 +99,15 @@ public class UserController {
                 : ResponseEntity.badRequest().body("Somthing went wrong");
 
     }
+    @PutMapping("/changePassword/{userId}")
+    public ResponseEntity<?> changePassword(@PathVariable Long userId, @RequestBody ChangePasswordDTO changePasswordDTO) {
+        boolean passwordChanged = userService.changePassword(userId, changePasswordDTO.getNewPassword());
+        if (passwordChanged) {
+            return ResponseEntity.ok(new MessageDTO("ok"));
+        } else {
+            return ResponseEntity.badRequest().body("Somthing went wrong");
+        }
+    }
     @DeleteMapping(path = "/deleteUser/{id}")
     public void deleteUser(@PathVariable Long id){
         userService.deleteUser(id);

@@ -17,4 +17,5 @@ public interface IUserService {
     Utilisateur findById(Long id);
     UserDetails loadUserByUsername(String username);
     boolean forgetPassword(String username);
+    boolean changePassword(Long userId, String newPassword);
 }

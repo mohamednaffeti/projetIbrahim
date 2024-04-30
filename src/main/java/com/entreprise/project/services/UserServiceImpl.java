@@ -99,7 +99,18 @@ public class UserServiceImpl implements IUserService , UserDetailsService {
             throw new DataNotFoundException("User not found with id: " + userId);
         }
     }
-
+    @Override
+    public boolean changePassword(Long userId, String newPassword) {
+        Optional<Utilisateur> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            Utilisateur user = userOptional.get();
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return true;
+        } else {
+            throw new DataNotFoundException("Utilisateur non trouvé avec l'ID : " + userId);
+        }
+    }
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);

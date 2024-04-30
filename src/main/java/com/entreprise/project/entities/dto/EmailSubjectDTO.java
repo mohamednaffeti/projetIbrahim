@@ -8,7 +8,7 @@ public class EmailSubjectDTO {
     private static final List<String> emailTypes = new ArrayList<>();
 
     static {
-        emailSubjects.add("Une Tache a été affectée à vous");
+        emailSubjects.add("Une Tâche a été affectée à vous");
         emailSubjects.add("Demande de réinitialisation de mot de passe ");
     }
     static {

@@ -1,6 +1,8 @@
 package com.entreprise.project.services;
 
 import com.entreprise.project.entities.Tache;
+import com.entreprise.project.entities.dto.EmailSubjectDTO;
+import com.entreprise.project.entities.dto.FormatEmailDTO;
 import com.entreprise.project.enums.TacheStatus;
 import com.entreprise.project.exceptions.DataNotFoundException;
 import com.entreprise.project.repositories.TacheRepository;
@@ -14,10 +16,19 @@ import java.util.Optional;
 public class TacheServiceImpl implements ITacheService {
     @Autowired
     private TacheRepository tacheRepository;
-
+    @Autowired
+    private MailConfig emailService;
     @Override
     public Tache createTache(Tache tache) {
-        return tacheRepository.save(tache);
+        Tache tache1= tacheRepository.save(tache);
+        FormatEmailDTO formatEmailDTO = FormatEmailDTO.builder().build();
+        formatEmailDTO.setTo(tache1.getAssigne().getEmail());
+        formatEmailDTO.setSubject(EmailSubjectDTO.getSubject(0));
+        formatEmailDTO.setDeadline(tache1.getDateDeadline());
+        formatEmailDTO.setDescription(tache1.getDescription());
+        emailService.sendVerificationEmail(formatEmailDTO,tache1.getAssigne().getFirstName(), tache1.getAssigne().getLastName(),
+                null,null, EmailSubjectDTO.getType(0),null);
+        return tache1;
     }
 
     @Override
@@ -30,6 +41,7 @@ public class TacheServiceImpl implements ITacheService {
             existingTacheEntity.setDescription(tache.getDescription());
             existingTacheEntity.setDateDeadline(tache.getDateDeadline());
             return tacheRepository.save(existingTacheEntity);
+
         } else {
             return null;
         }
