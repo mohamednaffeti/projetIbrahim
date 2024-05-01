@@ -7,6 +7,7 @@ import com.entreprise.project.entities.dto.*;
 import com.entreprise.project.enums.Role;
 import com.entreprise.project.exceptions.DataNotFoundException;
 import com.entreprise.project.exceptions.UserAlreadyExistException;
+import com.entreprise.project.mailConfig.MailConfig;
 import com.entreprise.project.repositories.TacheRepository;
 import com.entreprise.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

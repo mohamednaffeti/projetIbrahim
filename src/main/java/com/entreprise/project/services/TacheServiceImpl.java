@@ -5,6 +5,7 @@ import com.entreprise.project.entities.dto.EmailSubjectDTO;
 import com.entreprise.project.entities.dto.FormatEmailDTO;
 import com.entreprise.project.enums.TacheStatus;
 import com.entreprise.project.exceptions.DataNotFoundException;
+import com.entreprise.project.mailConfig.MailConfig;
 import com.entreprise.project.repositories.TacheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

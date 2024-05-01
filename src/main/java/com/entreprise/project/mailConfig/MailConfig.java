@@ -1,4 +1,4 @@
-package com.entreprise.project.services;
+package com.entreprise.project.mailConfig;
 
 
 import com.entreprise.project.entities.dto.FormatEmailDTO;
