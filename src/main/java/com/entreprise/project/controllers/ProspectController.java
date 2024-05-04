@@ -33,6 +33,13 @@ public class ProspectController {
         List<Prospect> prospects = prospectService.getAll();
         return new ResponseEntity<>(prospects, HttpStatus.OK);
     }
+    @GetMapping("/getAllByEntreprise/{id}")
+    public ResponseEntity<List<Prospect>> getProspectsByEntrerise(@PathVariable Long id) {
+        List<Prospect> prospects = prospectService.getAll().stream()
+                .filter(prospect -> prospect.getUtilisateur().getEntreprise().getId().equals(id))
+                .toList();
+        return new ResponseEntity<>(prospects, HttpStatus.OK);
+    }
 
     @DeleteMapping("/delete/{prospectId}")
     public ResponseEntity<Void> deleteProspect(@PathVariable Long prospectId) {
